@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.business.framework.user.mapper.UserMapper">
+
+<!--    <resultMap id="selectAllDemoMap" type="com.business.po.Demo">-->
+<!--        <result column="age" jdbcType="INTEGER" property="age"></result>-->
+<!--        <result column="name" jdbcType="VARCHAR" property="name"></result>-->
+<!--        <result column="password" jdbcType="VARCHAR" property="password"></result>-->
+<!--        <result column="id" jdbcType="VARCHAR" property="id"></result>-->
+<!--    </resultMap>-->
+
+<!--    <insert id="insert" parameterType="com.business.po.Demo">-->
+<!--        insert into demo(id, name, password, age) values(#{id}, #{name}, #{password}, #{age});-->
+<!--    </insert>-->
+
+    <select id="selectUserByUsername" parameterType="java.lang.String"
+            resultType="com.business.framework.user.po.User">
+        select
+           id, username, password, phone, age,
+           nickname, sex, enabled, description, create_time, update_time
+        from
+            user
+        where
+            username = #{value}
+    </select>
+</mapper>
