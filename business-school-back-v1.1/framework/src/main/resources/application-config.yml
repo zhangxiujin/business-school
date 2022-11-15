@@ -1,0 +1,17 @@
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "shutdown"
+      base-path: /monitor
+
+config:
+  sms:
+    expired: 5 #分钟
+  capatch:
+    expired: 5
+  token:
+    expired: 300

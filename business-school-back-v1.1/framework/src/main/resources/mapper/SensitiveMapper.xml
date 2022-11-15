@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bs.common.sensitive.mapper.SensitiveMapper">
+    <insert id="batchInserts" parameterType="java.util.List">
+        insert into sensitives(id, word, craete_time) values
+        <foreach collection="sensitives"  separator="," item="it">
+            (#{it.id}, #{id.word}, #{id.createTime})
+        </foreach>
+    </insert>
+</mapper>

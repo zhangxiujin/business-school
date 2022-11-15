@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bs.reward.mapper.RewardMapper">
+    <resultMap id="selectRewardsByUserIdMap" type="com.bs.reward.dto.RewardDTO">
+        <result column="reward_id" jdbcType="INTEGER" property="reward.rewardId"></result>
+        <result column="id" jdbcType="INTEGER" property="reward.id"></result>
+        <result column="title" jdbcType="VARCHAR" property="reward.title"></result>
+        <result column="content" jdbcType="VARCHAR" property="reward.content"></result>
+        <result column="status" jdbcType="VARCHAR" property="reward.status"></result>
+        <result column="verify" jdbcType="INTEGER" property="reward.verify"></result>
+        <result column="amount" jdbcType="INTEGER" property="reward.amount"></result>
+        <result column="end_time" jdbcType="TIMESTAMP" property="reward.endTime"></result>
+        <result column="shield" jdbcType="INTEGER" property="reward.shield"></result>
+        <result column="del" jdbcType="INTEGER" property="reward.del"></result>
+        <result column="top" jdbcType="INTEGER" property="reward.top"></result>
+        <result column="best_answer" jdbcType="INTEGER" property="reward.bestAnswer"></result>
+        <result column="recommend" jdbcType="INTEGER" property="reward.recommend"></result>
+        <result column="time_out" jdbcType="INTEGER" property="reward.timeOut"></result>
+        <result column="create_time" jdbcType="TIMESTAMP" property="reward.createTime"></result>
+        <result column="answerCount" jdbcType="INTEGER" property="answerCount"></result>
+    </resultMap>
+
+    <resultMap id="selectAllPublishedRewardsMap" type="com.bs.reward.dto.RewardDTO">
+        <result column="reward_id" jdbcType="INTEGER" property="reward.rewardId"></result>
+        <result column="id" jdbcType="INTEGER" property="reward.id"></result>
+        <result column="title" jdbcType="VARCHAR" property="reward.title"></result>
+        <result column="content" jdbcType="VARCHAR" property="reward.content"></result>
+        <result column="status" jdbcType="VARCHAR" property="reward.status"></result>
+        <result column="verify" jdbcType="INTEGER" property="reward.verify"></result>
+        <result column="amount" jdbcType="INTEGER" property="reward.amount"></result>
+        <result column="end_time" jdbcType="TIMESTAMP" property="reward.endTime"></result>
+        <result column="shield" jdbcType="INTEGER" property="reward.shield"></result>
+        <result column="del" jdbcType="INTEGER" property="reward.del"></result>
+        <result column="top" jdbcType="INTEGER" property="reward.top"></result>
+        <result column="best_answer" jdbcType="INTEGER" property="reward.bestAnswer"></result>
+        <result column="recommend" jdbcType="INTEGER" property="reward.recommend"></result>
+        <result column="time_out" jdbcType="INTEGER" property="reward.timeOut"></result>
+        <result column="create_time" jdbcType="TIMESTAMP" property="reward.createTime"></result>
+        <result column="answerCount" jdbcType="INTEGER" property="answerCount"></result>
+        <result column="username" jdbcType="VARCHAR" property="user.username"></result>
+    </resultMap>
+
+    <resultMap id="selectRewardAnswersByIdMap" type="com.bs.reward.dto.RewardAnswerDTO">
+        <result column="answer_id" jdbcType="INTEGER" property="rewardAnswer.answerId"></result>
+        <result column="reward_id" jdbcType="INTEGER" property="rewardAnswer.rewardId"></result>
+        <result column="id" jdbcType="INTEGER" property="rewardAnswer.id"></result>
+        <result column="content" jdbcType="VARCHAR" property="rewardAnswer.content"></result>
+        <result column="best_answer" jdbcType="INTEGER" property="rewardAnswer.bestAnswer"></result>
+        <result column="answer_time" jdbcType="TIMESTAMP" property="rewardAnswer.answerTime"></result>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"></result>
+        <result column="username" jdbcType="VARCHAR" property="username"></result>
+    </resultMap>
+
+    <select id="selectRewardsByUserId" parameterType="java.lang.Long" resultMap="selectRewardsByUserIdMap">
+        select
+            r.reward_id, r.id, r.title, r.content, r.status, r.verify, r.amount, r.end_time,
+            r.shield, r.del, r.top, r.recommend, r.time_out, r.create_time, r.best_answer,
+            count(r.reward_id) answerCount
+        from
+            reward r, reward_answer a
+        where
+            r.reward_id = a.reward_id
+        and
+            r.id = #{value}
+        group by
+            r.reward_id
+    </select>
+
+    <select id="selectAllPublishedRewards" resultMap="selectAllPublishedRewardsMap">
+        SELECT
+            r.reward_id, r.id, r.title, r.content, r.status, r.verify, r.amount, r.end_time,
+            r.shield, r.del, r.top, r.recommend, r.time_out, r.create_time, r.published_time,
+            r.best_answer, count(a.answer_id) answerCount, u.username
+        FROM
+            reward r
+        LEFT JOIN
+            reward_answer a
+        ON
+            r.reward_id = a.reward_id
+        LEFT JOIN
+            user u
+        ON
+            r.id = u.id
+        WHERE
+            r.status = '11' AND r.time_out = 0 AND verify = 2 AND del = 0 AND shield = 0
+        GROUP BY
+            r.reward_id
+        ORDER BY
+            r.top DESC, r.published_time DESC
+    </select>
+
+    <select id="selectRewardDetailById" parameterType="java.lang.Long" resultType="java.util.Map">
+        select
+          r.title,
+          r.reward_id rewardId,
+          r.amount,
+          u.nickname,
+          u.username,
+          r.content,
+          r.published_time publishedTime,
+          r.create_time createTime
+        from
+          reward r, user u
+        where
+          r.id = u.id
+        and
+          r.reward_id = #{value}
+    </select>
+
+    <select id="selectRewardAnswersById" parameterType="java.lang.Long" resultMap="selectRewardAnswersByIdMap">
+        select
+            r.reward_id,
+            r.answer_id,
+            r.id,
+            r.best_answer,
+            r.answer_time,
+            r.content,
+            u.username,
+            u.nickname
+        from
+            reward_answer r, user u
+        where
+            r.id = u.id
+        and
+            r.reward_id = #{value}
+    </select>
+
+    <insert id="insertRewardAnswer" parameterType="com.bs.reward.po.RewardAnswer">
+        insert into reward_answer(answer_id, reward_id, id, content, best_answer, answer_time)
+        values(#{answerId}, #{rewardId}, #{id}, #{content}, #{bestAnswer}, #{answerTime})
+    </insert>
+
+
+</mapper>

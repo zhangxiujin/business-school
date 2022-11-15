@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bs.statistic.mapper.RewardStatisticMapper">
+
+    <!--    <resultMap id="statisticCurrentDayMap" type="java.lang.Integer">-->
+    <!--    </resultMap>-->
+
+    <select id="statisticCurrentDay" resultType="java.lang.Integer">
+        SELECT
+            COUNT(1)
+        FROM
+            REWARD
+        WHERE
+            `STATUS` = '11'
+        AND
+            VERIFY = 2
+        AND
+            SHIELD = 0 AND DEL = 0
+        AND
+            PUBLISHED_TIME BETWEEN DATE_FORMAT(NOW(),'%y-%m-%d 00:00:00') AND DATE_FORMAT(NOW(),'%y-%m-%d 23:59:59')
+    </select>
+
+    <select id="statisticCurrentWeek" resultType="java.lang.Integer">
+        SELECT
+            COUNT(1)
+        FROM
+            REWARD
+        WHERE
+            `STATUS` = '11'
+        AND
+            VERIFY = 2
+        AND
+            SHIELD = 0 AND DEL = 0
+        AND
+            WEEK(PUBLISHED_TIME)
+    </select>
+
+    <select id="statisticCurrentMonth" resultType="java.lang.Integer">
+        SELECT
+            COUNT(1)
+        FROM
+            REWARD
+        WHERE
+            `STATUS` = '11'
+        AND
+            VERIFY = 2
+        AND
+            SHIELD = 0 AND DEL = 0
+        AND
+            MONTH(PUBLISHED_TIME)
+    </select>
+
+    <select id="statisticCurrentYear" resultType="java.lang.Integer">
+        SELECT
+            COUNT(1)
+        FROM
+            REWARD
+        WHERE
+            `STATUS` = '11'
+        AND
+            VERIFY = 2
+        AND
+            SHIELD = 0 AND DEL = 0
+        AND
+            YEAR(PUBLISHED_TIME)
+    </select>
+
+
+</mapper>
