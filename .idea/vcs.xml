@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/yhbs-front-portal" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/yhbs_android" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/yhbs_app_web" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/yhbs_back" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/yhbs_front_applets" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/yhbs_front_management" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/yhbs_front_pc_client" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/yhbs_front_pc_live" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/yhbs_ios" vcs="Git" />
+  </component>
+</project>
